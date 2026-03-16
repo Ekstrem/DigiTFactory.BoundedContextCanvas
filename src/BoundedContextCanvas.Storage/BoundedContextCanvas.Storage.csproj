@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BoundedContextCanvas.Storage</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DigiTFactory.Libraries.CommandRepository.Postgres" Version="0.1.0" />
+    <PackageReference Include="DigiTFactory.Libraries.ReadRepository.Postgres" Version="0.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BoundedContextCanvas.Domain\BoundedContextCanvas.Domain.csproj" />
+    <ProjectReference Include="..\BoundedContextCanvas.DomainServices\BoundedContextCanvas.DomainServices.csproj" />
+    <ProjectReference Include="..\BoundedContextCanvas.InternalContracts\BoundedContextCanvas.InternalContracts.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BoundedContextCanvas.Application</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BoundedContextCanvas.Domain\BoundedContextCanvas.Domain.csproj" />
+    <ProjectReference Include="..\BoundedContextCanvas.DomainServices\BoundedContextCanvas.DomainServices.csproj" />
+    <ProjectReference Include="..\BoundedContextCanvas.InternalContracts\BoundedContextCanvas.InternalContracts.csproj" />
+  </ItemGroup>
+</Project>
