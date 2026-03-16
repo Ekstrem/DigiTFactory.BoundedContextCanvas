@@ -1,5 +1,5 @@
-using Hive.SeedWorks.TacticalPatterns.Specifications;
-using Hive.SeedWorks.Result;
+using DigiTFactory.Libraries.SeedWorks.Invariants;
+using DigiTFactory.Libraries.SeedWorks.Result;
 
 namespace BoundedContextCanvas.Domain.Specifications;
 

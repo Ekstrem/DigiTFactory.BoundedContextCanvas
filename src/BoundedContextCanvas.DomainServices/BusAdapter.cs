@@ -1,5 +1,5 @@
-using Hive.SeedWorks.Events;
-using Hive.SeedWorks.Result;
+using DigiTFactory.Libraries.SeedWorks.Events;
+using DigiTFactory.Libraries.SeedWorks.Result;
 using BoundedContextCanvas.Domain;
 
 namespace BoundedContextCanvas.DomainServices;

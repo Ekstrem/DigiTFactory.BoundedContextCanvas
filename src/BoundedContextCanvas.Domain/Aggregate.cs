@@ -1,5 +1,5 @@
-using Hive.SeedWorks.Result;
-using Hive.SeedWorks.TacticalPatterns;
+using DigiTFactory.Libraries.SeedWorks.Result;
+using DigiTFactory.Libraries.SeedWorks.TacticalPatterns;
 using BoundedContextCanvas.Domain.Abstraction;
 using BoundedContextCanvas.Domain.Enums;
 using BoundedContextCanvas.Domain.Implementation;

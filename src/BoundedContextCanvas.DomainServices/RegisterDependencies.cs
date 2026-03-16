@@ -1,6 +1,6 @@
 using Autofac;
 using BoundedContextCanvas.Domain;
-using Hive.SeedWorks.Events;
+using DigiTFactory.Libraries.SeedWorks.Events;
 
 namespace BoundedContextCanvas.DomainServices;
 

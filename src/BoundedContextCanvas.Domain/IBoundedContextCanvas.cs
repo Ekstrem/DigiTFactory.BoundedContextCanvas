@@ -1,4 +1,4 @@
-using Hive.SeedWorks.TacticalPatterns;
+using DigiTFactory.Libraries.SeedWorks.Definition;
 
 namespace BoundedContextCanvas.Domain;
 

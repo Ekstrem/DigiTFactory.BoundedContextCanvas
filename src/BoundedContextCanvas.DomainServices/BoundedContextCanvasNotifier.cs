@@ -1,4 +1,4 @@
-using Hive.SeedWorks.Result;
+using DigiTFactory.Libraries.SeedWorks.Result;
 using BoundedContextCanvas.Domain;
 
 namespace BoundedContextCanvas.DomainServices;

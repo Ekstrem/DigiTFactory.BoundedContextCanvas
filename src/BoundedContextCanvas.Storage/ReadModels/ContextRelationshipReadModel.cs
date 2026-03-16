@@ -1,4 +1,4 @@
-using Hive.SeedWorks.TacticalPatterns;
+using DigiTFactory.Libraries.SeedWorks.TacticalPatterns;
 using BoundedContextCanvas.Domain;
 
 namespace BoundedContextCanvas.Storage.ReadModels;
