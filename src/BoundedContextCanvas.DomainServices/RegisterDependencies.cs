@@ -8,10 +8,6 @@ public class RegisterDependencies : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<BoundedContextCanvasNotifier>()
-            .AsSelf()
-            .SingleInstance();
-
         builder.RegisterType<BusAdapter>()
             .AsSelf()
             .SingleInstance();
@@ -20,15 +16,13 @@ public class RegisterDependencies : Module
             .AsSelf()
             .InstancePerLifetimeScope();
 
-        builder.Register(ctx =>
-        {
-            var notifier = ctx.Resolve<BoundedContextCanvasNotifier>();
-            var busAdapter = ctx.Resolve<BusAdapter>();
-            notifier.Subscribe(busAdapter);
-            return notifier;
-        })
-        .AsSelf()
-        .SingleInstance()
-        .AutoActivate();
+        builder.RegisterType<BoundedContextCanvasNotifier>()
+            .AsSelf()
+            .SingleInstance()
+            .OnActivated(e =>
+            {
+                var busAdapter = e.Context.Resolve<BusAdapter>();
+                e.Instance.Subscribe(busAdapter);
+            });
     }
 }
