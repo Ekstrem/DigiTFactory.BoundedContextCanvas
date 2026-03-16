@@ -1,6 +1,5 @@
 using Autofac;
 using BoundedContextCanvas.Domain;
-using DigiTFactory.Libraries.SeedWorks.Events;
 
 namespace BoundedContextCanvas.DomainServices;
 
@@ -18,11 +17,6 @@ public class RegisterDependencies : Module
 
         builder.RegisterType<BoundedContextCanvasNotifier>()
             .AsSelf()
-            .SingleInstance()
-            .OnActivated(e =>
-            {
-                var busAdapter = e.Context.Resolve<BusAdapter>();
-                e.Instance.Subscribe(busAdapter);
-            });
+            .SingleInstance();
     }
 }

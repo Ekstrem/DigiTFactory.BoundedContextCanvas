@@ -6,6 +6,7 @@ using BoundedContextCanvas.InternalContracts;
 using BoundedContextCanvas.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using DigiTFactory.Libraries.EventBus.InMemory.Extensions;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>(cb =>
 {
     cb.RegisterModule(new RegisterDependencies());
 });
+
+// EventBus (InMemory for Single profile)
+builder.Services.AddEventBusInMemory();
 
 // MediatR
 builder.Services.AddMediatR(cfg =>
@@ -57,6 +61,11 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+// Wire Observer: BusAdapter subscribes to Notifier
+var notifier = app.Services.GetRequiredService<BoundedContextCanvasNotifier>();
+var busAdapter = app.Services.GetRequiredService<BusAdapter>();
+notifier.Subscribe(busAdapter);
 
 // Swagger UI
 app.UseSwagger();
