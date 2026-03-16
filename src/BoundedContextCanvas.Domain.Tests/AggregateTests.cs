@@ -1,3 +1,4 @@
+using Xunit;
 using FluentAssertions;
 using BoundedContextCanvas.Domain;
 using BoundedContextCanvas.Domain.Enums;

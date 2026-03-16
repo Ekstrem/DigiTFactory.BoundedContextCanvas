@@ -1,3 +1,5 @@
+using DigiTFactory.Libraries.SeedWorks.TacticalPatterns;
+using DigiTFactory.Libraries.SeedWorks.LifeCircle;
 using BoundedContextCanvas.Domain.Abstraction;
 
 namespace BoundedContextCanvas.Domain;
@@ -15,6 +17,17 @@ public sealed class BoundedContextCanvasAnemicModel : IBoundedContextCanvasAnemi
     public IReadOnlyList<IBusinessDecision> BusinessDecisions { get; }
     public IReadOnlyList<IAssumption> Assumptions { get; }
 
+    // IAnemicModel members
+    public Guid Id { get; }
+    public long Version { get; }
+    public Guid CorrelationToken { get; }
+    public string CommandName { get; } = string.Empty;
+    public string SubjectName { get; } = string.Empty;
+    public IDictionary<string, IValueObject> Invariants => GetValueObjects();
+
+    public IDictionary<string, IValueObject> GetValueObjects()
+        => ValueObjectHelper.GetValueObjects(this);
+
     private BoundedContextCanvasAnemicModel(
         IBoundedContextCanvasRoot root,
         IStrategicClassification? strategicClassification,
@@ -25,7 +38,9 @@ public sealed class BoundedContextCanvasAnemicModel : IBoundedContextCanvasAnemi
         IReadOnlyList<IExternalConnection> relationships,
         IReadOnlyList<IPublicInterfaceItem> publicInterface,
         IReadOnlyList<IBusinessDecision> businessDecisions,
-        IReadOnlyList<IAssumption> assumptions)
+        IReadOnlyList<IAssumption> assumptions,
+        Guid? id = null,
+        long version = 0)
     {
         Root = root;
         StrategicClassification = strategicClassification;
@@ -37,6 +52,9 @@ public sealed class BoundedContextCanvasAnemicModel : IBoundedContextCanvasAnemi
         PublicInterface = publicInterface;
         BusinessDecisions = businessDecisions;
         Assumptions = assumptions;
+        Id = id ?? root.ContextId;
+        Version = version;
+        CorrelationToken = Guid.NewGuid();
     }
 
     public static BoundedContextCanvasAnemicModel Create(
@@ -49,12 +67,15 @@ public sealed class BoundedContextCanvasAnemicModel : IBoundedContextCanvasAnemi
         IReadOnlyList<IExternalConnection>? relationships = null,
         IReadOnlyList<IPublicInterfaceItem>? publicInterface = null,
         IReadOnlyList<IBusinessDecision>? businessDecisions = null,
-        IReadOnlyList<IAssumption>? assumptions = null)
+        IReadOnlyList<IAssumption>? assumptions = null,
+        Guid? id = null,
+        long version = 0)
         => new(root, strategicClassification, definition, domainRole,
                language ?? Array.Empty<IUbiquitousLanguageTerm>(),
                responsibilities ?? Array.Empty<IResponsibility>(),
                relationships ?? Array.Empty<IExternalConnection>(),
                publicInterface ?? Array.Empty<IPublicInterfaceItem>(),
                businessDecisions ?? Array.Empty<IBusinessDecision>(),
-               assumptions ?? Array.Empty<IAssumption>());
+               assumptions ?? Array.Empty<IAssumption>(),
+               id, version);
 }

@@ -6,8 +6,14 @@ namespace BoundedContextCanvas.Domain.Specifications;
 
 public class InterfaceIntegrityValidator : IBusinessOperationValidator<IBoundedContextCanvas, IBoundedContextCanvasAnemicModel>
 {
-    public DomainResult IsSatisfiedBy(IBoundedContextCanvasAnemicModel model)
+    private string _reason = string.Empty;
+
+    public string Reason => _reason;
+    public DomainOperationResultEnum DomainResult => DomainOperationResultEnum.Exception;
+
+    public bool IsSatisfiedBy(BusinessOperationData<IBoundedContextCanvas, IBoundedContextCanvasAnemicModel> obj)
     {
+        var model = obj.Model;
         var outboundEvents = model.PublicInterface
             .Where(i => i.Direction == InterfaceDirectionEnum.Outbound && i.Type == InterfaceItemTypeEnum.DomainEvent)
             .ToList();
@@ -23,10 +29,10 @@ public class InterfaceIntegrityValidator : IBusinessOperationValidator<IBoundedC
             .ToList();
 
         if (orphaned.Count == 0)
-            return DomainResult.Success();
+            return true;
 
-        return DomainResult.Exception(
-            $"Outbound domain events must be linked to a responsibility. " +
-            $"Orphaned events: {string.Join(", ", orphaned)}");
+        _reason = $"Outbound domain events must be linked to a responsibility. " +
+                  $"Orphaned events: {string.Join(", ", orphaned)}";
+        return false;
     }
 }

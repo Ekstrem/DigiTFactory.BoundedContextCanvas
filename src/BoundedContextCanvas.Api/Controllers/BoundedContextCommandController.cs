@@ -46,7 +46,8 @@ public class BoundedContextCommandController : ControllerBase
     [ProducesResponseType(400)]
     public async Task<IActionResult> RefineBoundary(Guid id, [FromBody] RefineBoundaryRequest request, CancellationToken ct)
     {
-        var items = request.Responsibilities.Select(r => (r.Description, r.Type)).ToList();
+        var items = request.Responsibilities
+            .Select(r => new RefineBoundaryCommand.ResponsibilityItem(r.Description, r.Type)).ToList();
         var command = new RefineBoundaryCommand(id, items);
         var result = await _mediator.Send(command, ct);
         return result.Result == "Exception" ? BadRequest(ToResponse(result)) : Ok(ToResponse(result));
@@ -100,7 +101,8 @@ public class BoundedContextCommandController : ControllerBase
     [ProducesResponseType(400)]
     public async Task<IActionResult> PublishContract(Guid id, [FromBody] PublishContractRequest request, CancellationToken ct)
     {
-        var items = request.Items.Select(i => (i.Name, i.Type, i.Direction, i.LinkedResponsibility)).ToList();
+        var items = request.Items
+            .Select(i => new PublishContractCommand.InterfaceItem(i.Name, i.Type, i.Direction, i.LinkedResponsibility)).ToList();
         var command = new PublishContractCommand(id, items);
         var result = await _mediator.Send(command, ct);
         return result.Result == "Exception" ? BadRequest(ToResponse(result)) : Ok(ToResponse(result));

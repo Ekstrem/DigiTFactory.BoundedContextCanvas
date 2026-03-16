@@ -5,19 +5,24 @@ namespace BoundedContextCanvas.Domain.Specifications;
 
 public class ResponsibilityCohesionValidator : IBusinessOperationValidator<IBoundedContextCanvas, IBoundedContextCanvasAnemicModel>
 {
-    public DomainResult IsSatisfiedBy(IBoundedContextCanvasAnemicModel model)
+    private string _reason = string.Empty;
+
+    public string Reason => _reason;
+    public DomainOperationResultEnum DomainResult => DomainOperationResultEnum.Exception;
+
+    public bool IsSatisfiedBy(BusinessOperationData<IBoundedContextCanvas, IBoundedContextCanvasAnemicModel> obj)
     {
-        var duplicates = model.Responsibilities
+        var duplicates = obj.Model.Responsibilities
             .GroupBy(r => r.Description, StringComparer.OrdinalIgnoreCase)
             .Where(g => g.Count() > 1)
             .Select(g => g.Key)
             .ToList();
 
         if (duplicates.Count == 0)
-            return DomainResult.Success();
+            return true;
 
-        return DomainResult.Exception(
-            $"Duplicate responsibilities found: {string.Join(", ", duplicates)}. " +
-            "Each responsibility description must be unique.");
+        _reason = $"Duplicate responsibilities found: {string.Join(", ", duplicates)}. " +
+                  "Each responsibility description must be unique.";
+        return false;
     }
 }

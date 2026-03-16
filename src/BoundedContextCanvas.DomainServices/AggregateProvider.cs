@@ -18,15 +18,13 @@ public class AggregateProvider
 
     public async Task<Aggregate> GetAggregateAsync(Guid id, CancellationToken ct = default)
     {
-        var anemicModel = await _repository.GetByIdAsync(id, ct);
-        var aggregate = Aggregate.Create(anemicModel);
-        return aggregate;
+        var versions = await _repository.GetById(id, ct);
+        var latest = versions.OrderByDescending(v => v.Version).First();
+        return Aggregate.Create(latest);
     }
 
     public Aggregate CreateNew(IBoundedContextCanvasAnemicModel model)
-    {
-        return Aggregate.Create(model);
-    }
+        => Aggregate.Create(model);
 
     public BoundedContextCanvasNotifier Notifier => _notifier;
 }

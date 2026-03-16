@@ -8,19 +8,13 @@ public class BusAdapter : IObserver<AggregateResult<IBoundedContextCanvas, IBoun
 {
     private readonly IEventBus _eventBus;
 
-    public BusAdapter(IEventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
+    public BusAdapter(IEventBus eventBus) => _eventBus = eventBus;
 
     public void OnCompleted() { }
-
     public void OnError(Exception error) { }
 
     public void OnNext(AggregateResult<IBoundedContextCanvas, IBoundedContextCanvasAnemicModel> value)
     {
-        // Publish domain event to the bus
-        // The event bus handles persistence to Command DB, projection to Read Store, and outbound handlers
-        _eventBus.PublishAsync(value).ConfigureAwait(false).GetAwaiter().GetResult();
+        _eventBus.PublishAsync(value.Event).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 }

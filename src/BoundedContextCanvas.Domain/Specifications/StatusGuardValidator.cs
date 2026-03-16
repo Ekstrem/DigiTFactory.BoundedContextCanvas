@@ -8,6 +8,7 @@ public class StatusGuardValidator : IBusinessOperationValidator<IBoundedContextC
 {
     private readonly CanvasStatusEnum[] _allowedStatuses;
     private readonly string _commandName;
+    private string _reason = string.Empty;
 
     public StatusGuardValidator(string commandName, params CanvasStatusEnum[] allowedStatuses)
     {
@@ -15,13 +16,17 @@ public class StatusGuardValidator : IBusinessOperationValidator<IBoundedContextC
         _allowedStatuses = allowedStatuses;
     }
 
-    public DomainResult IsSatisfiedBy(IBoundedContextCanvasAnemicModel model)
-    {
-        if (_allowedStatuses.Contains(model.Root.Status))
-            return DomainResult.Success();
+    public string Reason => _reason;
+    public DomainOperationResultEnum DomainResult => DomainOperationResultEnum.Exception;
 
-        return DomainResult.Exception(
-            $"Command '{_commandName}' is not allowed in status '{model.Root.Status}'. " +
-            $"Allowed statuses: {string.Join(", ", _allowedStatuses)}");
+    public bool IsSatisfiedBy(BusinessOperationData<IBoundedContextCanvas, IBoundedContextCanvasAnemicModel> obj)
+    {
+        var model = obj.Model;
+        if (_allowedStatuses.Contains(model.Root.Status))
+            return true;
+
+        _reason = $"Command '{_commandName}' is not allowed in status '{model.Root.Status}'. " +
+                  $"Allowed statuses: {string.Join(", ", _allowedStatuses)}";
+        return false;
     }
 }
